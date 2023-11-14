@@ -1,16 +1,14 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Header from "./Components/Header";
-import Post from "./Components/Post/Post";
-import FooterMenu from "./Components/FooterMenu/FooterMenu";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import MainPage from "./pages/MainPage";
+const router = createBrowserRouter([
+  { path: "/", element: <LandingPage /> },
+  { path: "/MainPage", element: <MainPage /> },
+]);
 function App() {
-  return (
-    <div className="">
-      <Header />
-      <Post />
-      <FooterMenu />
-    </div>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

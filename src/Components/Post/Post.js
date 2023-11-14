@@ -7,7 +7,7 @@ function Post() {
   const menuCtx = useContext(MenuContext);
 
   return (
-    <div className="border border-slate-500 w-1/2 flex-col flex mx-auto m-0 gap-6">
+    <div className="border h-1/2 border-slate-500 w-full flex-col flex mx-auto m-0 gap-6">
       {postCtx.map((item) => (
         <PostItem
           key={item.id}

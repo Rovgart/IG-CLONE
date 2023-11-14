@@ -9,7 +9,7 @@ function FooterMenu() {
   });
   const footerCtx = useContext(FooterContext);
   return (
-    <footer className="w-screen border-slate-500 border flex absolute bottom-0 p-5 justify-around gap-5">
+    <footer className="w-screen border-slate-500 border flex absolute bottom-0 p-2 justify-around gap-5">
       <FooterItem footerIcons={footerCtx} mdScreen={mdScreen} />
     </footer>
   );

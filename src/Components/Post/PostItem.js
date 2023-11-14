@@ -10,11 +10,11 @@ function PostItem({
 }) {
   const postStyling = postType;
   return (
-    <>
+    <div className="h-1/2 flex flex-col gap-3">
       <div>
         <div className="h-1/4 flex justify-start items-center gap-2  ">
-          <img className="w-1/6 h-1/4 rounded-full" src={authorImg} alt="" />
-          <h1 className="font-bold ">{authorName}</h1>
+          <img className="w-1/12 h-1/4 rounded-full" src={authorImg} alt="" />
+          <h1 className="font-bold text-postUser ">{authorName}</h1>
         </div>
       </div>
       <div>
@@ -33,15 +33,15 @@ function PostItem({
       </div>
       <ul className="flex items-center">
         {buttons.map((button, index) => (
-          <li key={index} className="">
+          <li key={index} className="text-xl">
             {button}
           </li>
         ))}
       </ul>
       <div className="flex items-center gap-2">
-        <h1 className="font-bold">{`Likes: ${likes}`}</h1>
+        <h1 className="font-bold text-postUser">{`Likes: ${likes}`}</h1>
       </div>
-    </>
+    </div>
   );
 }
 export default PostItem;
