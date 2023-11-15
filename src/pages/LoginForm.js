@@ -1,6 +1,5 @@
 import { useState } from "react";
-import 
-function LoginForm() {
+function LoginForm(props) {
   const [userData, setUserData] = useState([]);
 
   const [inputs, setInputs] = useState({
@@ -26,15 +25,21 @@ function LoginForm() {
   //   const data = setUserData(resp);
   // });
   return (
-    <div className="">
+    <div
+      className={` ${
+        props.mdScreen ? "col-start-3 col-end-4" : "col-start-2 col-end-4"
+      } items-center h-full w-screen lg:w-3/4 shadow-black shadow-sm justify-around flex flex-col p-3 `}
+    >
       <form
         onSubmit={formSubmitHandler}
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-4 mt-2"
         action=""
       >
+        <h1 className="font-logoFont text-center text-3xl">InstaClone</h1>
+
         <input
           onChange={inputHandler}
-          className={"px-2"}
+          className={"px-2 py-1 shadow-sm shadow-black"}
           type="text"
           name="login"
           id=""
@@ -43,7 +48,7 @@ function LoginForm() {
         />
         <input
           onChange={inputHandler}
-          className="px-2 py-1"
+          className="px-2 py-1 shadow-sm shadow-black"
           type="password"
           name="password"
           value={inputs.password}
@@ -52,17 +57,17 @@ function LoginForm() {
         />
         <div className="flex gap-3">
           <input
-            className="bg-slate-500 px-2 py-3 rounded-sm"
+            className="bg-blue-900 text-white px-2 py-2 rounded-md w-full font-semibold"
             type="submit"
-            value="SIGN IN"
-          />
-          <input
-            className="bg-red-500 px-2 py-3 rounded-sm"
-            type="submit"
-            value="SIGN UP"
+            value="Sign In"
           />
         </div>
       </form>
+      <div>
+        <a className="text-purple-500 text-center text-account" href="#">
+          Don't have an account yet ?
+        </a>
+      </div>
     </div>
   );
 }
