@@ -6,8 +6,10 @@ import Post from "./models/postModel.js";
 import Like from "./models/likeModel.js";
 import userRoutes from "./routes/userRouters.js";
 import postRouters from "./routes/postRouters.js";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use("/api", userRoutes);
@@ -33,7 +35,3 @@ db.sync()
 	.catch((error) => {
 		console.error("Database sync error:", error);
 	});
-
-
-
-	

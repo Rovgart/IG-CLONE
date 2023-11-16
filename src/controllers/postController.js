@@ -23,9 +23,11 @@ export const getUserPost = async (req, res) => {
 		if (posts.length > 0) {
 			res.json(posts);
 		} else {
-			res.json({ message: "could not find the username" });
+			res.json({ message: "could not find the username or the user has no posts" });
 		}
 	} catch (error) {
 		res.status(500).json({ message: "Server error", error });
 	}
 };
+
+
