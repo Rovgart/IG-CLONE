@@ -1,8 +1,8 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
-import db from '../config/dbConfig.js';
+import { DataTypes, Model, Sequelize } from "sequelize";
+import db from "../config/dbConfig.js";
 
 const Like = db.define(
-	'like',
+	"like",
 	{
 		id: {
 			type: DataTypes.INTEGER,
@@ -17,7 +17,7 @@ const Like = db.define(
 		postId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
-			unique: 'user_post_unique',
+			unique: "user_post_unique",
 		},
 		createdAt: {
 			type: DataTypes.DATE,
@@ -29,8 +29,8 @@ const Like = db.define(
 		indexes: [
 			{
 				unique: true,
-				fields: ['userId', 'postId'],
-				name: 'user_post_unique',
+				fields: ["userId", "postId"],
+				name: "user_post_unique",
 			},
 		],
 	}
