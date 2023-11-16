@@ -10,9 +10,9 @@ export const createPost = async (req, res) => {
 		res.status(500).json({ message: "Server error", error });
 	}
 };
-
+/// mayvbe change it to body request
 export const getUserPost = async (req, res) => {
-	const userName = req.params.username;
+	const userName = req.body.username;
 	try {
 		// console.log(userName);
 		const posts = await Post.findAll({
@@ -23,11 +23,9 @@ export const getUserPost = async (req, res) => {
 		if (posts.length > 0) {
 			res.json(posts);
 		} else {
-			res.json({ message: "could not find the username or the user has no posts" });
+			res.json({ message: "no user post found, make sure the user exist and has posted" });
 		}
 	} catch (error) {
 		res.status(500).json({ message: "Server error", error });
 	}
 };
-
-
