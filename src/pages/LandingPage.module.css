@@ -1,0 +1,15 @@
+.ja {
+  position: absolute;
+  left: 25.5%;
+  width: 20%;
+  min-width: 20%;
+  z-index: -1;
+}
+.milosz {
+  position: absolute;
+  left: 25.5%;
+  min-width: 18.2%;
+
+  z-index: -1;
+  max-height: 48.5%;
+}
