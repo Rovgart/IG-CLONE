@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsers, getUser, createUser, updateUser, deleteUser } from "../controllers/userController.js";
+import { getAllUsers, getUser, createUser, updateUser, deleteUser, test } from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -8,5 +8,6 @@ router.get("/user/:username", getUser);
 router.post("/users", createUser);
 router.put("/users/:username", updateUser); // todo logic
 router.delete("/users/:id", deleteUser); // todo logic
+router.get("/users/test", test);
 
 export default router;

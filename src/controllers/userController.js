@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import { encryptPassword, validPassword } from "../service/passCrypt.js";
+import { isPasswordMatching } from "../service/passChecker.js";
 
 export const getAllUsers = async (req, res) => {
 	try {
@@ -32,7 +33,6 @@ export const getUser = async (req, res) => {
 export const createUser = async (req, res) => {
 	const request = req.body;
 	const hashingPass = encryptPassword(request.password);
-
 	try {
 		const newUser = await User.create({ username: request.username, email: request.email, password: hashingPass });
 
@@ -47,23 +47,29 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
 	const request = req.body;
 	const userName = req.params.username;
+	const password = request.password;
+	const validationOfPassword = isPasswordMatching(request.username, password);
 	const hashingPass = encryptPassword(request.password);
 
-	try {
-		const user = await User.findOne({
-			where: {
-				username: userName,
-			},
-		});
-		/// todo add user logic that only lets user update themselfs+
-		if (user) {
-			const update = await user.update({ username: request.username, email: request.email, password: hashingPass });
-			res.json(update);
-		} else {
-			res.status(404).json({ messege: "Wrong user name passed in request" });
+	if (await validationOfPassword.result) {
+		try {
+			const user = await User.findOne({
+				where: {
+					username: userName,
+				},
+			});
+			/// todo add user logic that only lets user update themselfs+
+			if (user) {
+				const update = await user.update({ username: request.username, email: request.email, password: hashingPass });
+				res.json(update);
+			} else {
+				res.status(404).json({ messege: "Wrong user name passed in request" });
+			}
+		} catch (error) {
+			res.status(500).json({ message: "Server error, ale server jest  perfecto wiec ty cos zjebales smieuc", error });
 		}
-	} catch (error) {
-		res.status(500).json({ message: "Server error, ale server jest  perfecto wiec ty cos zjebales smieuc", error });
+	} else {
+		res.status(500).json(await validationOfPassword);
 	}
 };
 
@@ -81,5 +87,20 @@ export const deleteUser = async (req, res) => {
 		}
 	} catch (error) {
 		res.status(500).json({ message: "Server error", error: error.errors[0].message });
+	}
+};
+
+export const test = async (req, res) => {
+	const userName = req.body.username;
+	const password = req.body.password;
+
+	try {
+		const testJson = await isPasswordMatching(userName, password);
+		if (testJson.result) {
+			console.log("ahaahaha dziala kurwa ");
+		}
+		res.json(testJson);
+	} catch (error) {
+		res.status(500).json({ message: "Server error" });
 	}
 };
