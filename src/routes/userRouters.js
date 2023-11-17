@@ -4,9 +4,9 @@ import { getAllUsers, getUser, createUser, updateUser, deleteUser } from "../con
 const router = express.Router();
 
 router.get("/users", getAllUsers);
-router.get("/user/:id", getUser);
+router.get("/user/:username", getUser);
 router.post("/users", createUser);
-router.put("/users/:id", updateUser); // todo logic
+router.put("/users/:username", updateUser); // todo logic
 router.delete("/users/:id", deleteUser); // todo logic
 
 export default router;

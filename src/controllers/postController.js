@@ -7,17 +7,15 @@ export const createPost = async (req, res) => {
 		const newPost = await Post.create({ createdBy: request.createdBy, content: request.content, contentPic: request.contentPic });
 		res.status(201).json(newPost);
 	} catch (error) {
-		res.status(500).json({ message: "Server error", error });
+		res.status(500).json({ message: "Server error" });
 	}
 };
-/// mayvbe change it to body request
 export const getUserPost = async (req, res) => {
-	const userName = req.body.username;
+	const postCreator = req.body.username || req.body.id; /// need to add functionality for this
 	try {
-		// console.log(userName);
 		const posts = await Post.findAll({
 			where: {
-				createdBy: userName,
+				createdBy: postCreator,
 			},
 		});
 		if (posts.length > 0) {
