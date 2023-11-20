@@ -34,6 +34,7 @@ db.sync()
 	.then(async () => {
 		await Promise.all([User.sync(), Post.sync(), Like.sync()]);
 		app.listen(PORT, () => {
+			
 			console.log(`Server is running on port ${PORT}`);
 		});
 	})

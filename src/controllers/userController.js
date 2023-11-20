@@ -1,12 +1,14 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import { encryptPassword, validPassword } from "../service/passCrypt.js";
-import { isPasswordMatching } from "../service/passChecker.js";
+import { userCredentialsCheck } from "../service/userCredentialsCheck.js";
+import { isUserCheck } from "../service/isUserCheck.js";
+import { json } from "sequelize";
 
 export const getAllUsers = async (req, res) => {
 	try {
 		const users = await User.findAll();
-		res.json(users);
+		res.status(200).json(users);
 	} catch (error) {
 		res.status(500).json({ message: "Server errors", error: error.errors[0].message });
 	}
@@ -38,55 +40,53 @@ export const createUser = async (req, res) => {
 
 		res.status(201).json(newUser);
 	} catch (error) {
-		res
-			.status(500)
-			.json({ message: "Server error, norlamnie dalbym tu dojabany error ale podobno tak sie nie robi wiec sam ogarnij co sie zjebalo :)", error });
+		res.status(500).json({ message: "Server error, norlamnie dalbym tu dojabany error alelo :)", error });
 	}
 };
 
 export const updateUser = async (req, res) => {
-	const request = req.body;
-	const userName = req.params.username;
-	const password = request.password;
-	const validationOfPassword = isPasswordMatching(request.username, password);
-	const hashingPass = encryptPassword(request.password);
+	const requestBody = req.body;
+	const currentUserName = req.params.username;
+	const currentPassword = requestBody.password;
 
-	if (await validationOfPassword.result) {
-		try {
-			const user = await User.findOne({
-				where: {
-					username: userName,
-				},
-			});
-			/// todo add user logic that only lets user update themselfs+
-			if (user) {
-				const update = await user.update({ username: request.username, email: request.email, password: hashingPass });
-				res.json(update);
-			} else {
-				res.status(404).json({ messege: "Wrong user name passed in request" });
-			}
-		} catch (error) {
-			res.status(500).json({ message: "Server error, ale server jest  perfecto wiec ty cos zjebales smieuc", error });
+	const newPassword = await requestBody.newPassword;
+	const newUsername = requestBody.newUsername;
+	const newPassHashed = encryptPassword(newPassword);
+
+	try {
+		const userCredentials = await userCredentialsCheck(currentUserName, currentPassword);
+
+		if (userCredentials.result) {
+			const user = userCredentials.user;
+			const updatedUser = await user.update({ username: newUsername, password: newPassHashed, email: requestBody.email });
+			res.status(200).json(updatedUser);
+			//
+		} else {
+			res.status(404).json(userCredentials);
 		}
-	} else {
-		res.status(500).json(await validationOfPassword);
+	} catch (error) {
+		res.status(500).json({ message: "server error " });
 	}
 };
 
 export const deleteUser = async (req, res) => {
-	const userId = req.params.id;
+	const userName = req.params.username;
+	const password = req.body.password;
 
 	try {
-		const user = await User.findByPk(userId);
+		const userCredentials = await userCredentialsCheck(userName, password);
 
-		if (user) {
+		if (userCredentials.result) {
+			const user = userCredentials.user;
+
 			const deletedUser = await user.destroy();
-			res.json(`sucesfully deleted user ${deletedUser.username}`);
+			res.status(204).json(`sucesfully deleted user ${deletedUser.username}`);
+			//
 		} else {
-			res.status(404).json({ messege: "Wrong user id passed in request" });
+			res.status(404).json(userCredentials);
 		}
 	} catch (error) {
-		res.status(500).json({ message: "Server error", error: error.errors[0].message });
+		res.status(500).json({ message: "Server error" });
 	}
 };
 
@@ -95,7 +95,7 @@ export const test = async (req, res) => {
 	const password = req.body.password;
 
 	try {
-		const testJson = await isPasswordMatching(userName, password);
+		const testJson = await userCredentialsCheck(userName, password);
 		if (testJson.result) {
 			console.log("ahaahaha dziala kurwa ");
 		}
