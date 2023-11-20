@@ -27,11 +27,9 @@ function LandingPage() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const fetchedData = await fetch("http://localhost:3000/api/users/1", {
-          mode: "no-cors",
-        });
-        const response = await fetchedData.json();
-        setUsers(response);
+        const response = await fetch("http://localhost:3000/api/user/1");
+        const data = await response;
+        setUsers(data);
         console.log(users);
       } catch (error) {
         console.log(error.message);
