@@ -1,9 +1,6 @@
 import User from "../models/userModel.js";
-import bcrypt from "bcrypt";
 import { encryptPassword, validPassword } from "../service/passCrypt.js";
 import { userCredentialsCheck } from "../service/userCredentialsCheck.js";
-import { isUserCheck } from "../service/isUserCheck.js";
-import { json } from "sequelize";
 import { verifyToken, extractingToken } from "../service/jwtToken.js";
 
 export const getAllUsers = async (req, res) => {
@@ -50,9 +47,10 @@ export const updateUser = async (req, res) => {
 	const currentUserName = req.params.username;
 	const currentPassword = requestBody.password;
 
-	const newPassword = await requestBody.newPassword;
+	const newPassword = requestBody.newPassword;
 	const newUsername = requestBody.newUsername;
 	const newPassHashed = encryptPassword(newPassword);
+	/////todo making sure the user id matches jwt
 
 	try {
 		const userCredentials = await userCredentialsCheck(currentUserName, currentPassword);
@@ -83,10 +81,10 @@ export const deleteUser = async (req, res) => {
 	try {
 		const userToken = await verifyToken(pureToken, "secretKey");
 		const userCredentials = await userCredentialsCheck(userName, password);
+		const user = userCredentials.user;
 
-		if (userCredentials.result && userToken.id && userToken.username) {
-			const user = userCredentials.user;
-
+		if (userCredentials.result && userToken.id === user.id && userToken.username === user.username) {
+			//
 			const deletedUser = await user.destroy();
 			res.status(200).json({ message: `sucesfully deleted user ${deletedUser.username}` });
 			//

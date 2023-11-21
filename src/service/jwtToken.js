@@ -13,14 +13,12 @@ export const verifyToken = async (token, key) => {
 };
 
 export const generateToken = (user) => {
-	return jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET_KEY || "secretKey", {
-		expiresIn: "2h",
-	});
+	return jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET_KEY || "secretKey");
 };
 
 export const extractingToken = (token) => {
 	if (typeof token === "string") {
-		const [value, bearer, pureToken] = token.split(" ");
+		const [bearer, pureToken] = token.split(" ");
 		return pureToken;
 	}
 	return { message: "wrong token format" };
