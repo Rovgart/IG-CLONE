@@ -36,8 +36,8 @@ Welcome to our Instagram clone project! This project aims to replicate some feat
     ```javascript
     const Sequelize = require('sequelize');
     const db = new Sequelize('your_schema_name', 'user_name', 'password', {
-        host: 'localhost',
-        dialect: 'mysql',
+        host: 'your_hosting_adress',
+        dialect: 'choose_your_sql',
     });
     ```
 
