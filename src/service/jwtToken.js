@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
-import { json } from "sequelize";
 // Verify a JWT
-const payload = { userId: "123", username: "john_doe" };
-const token = jwt.sign(payload, "secretKey", { expiresIn: "1h" });
+// const payload = { userId: "123", username: "john_doe" };
+// const token = jwt.sign(payload, "secretKey", { expiresIn: "1h" });
 
 export const verifyToken = async (token, key) => {
 	try {

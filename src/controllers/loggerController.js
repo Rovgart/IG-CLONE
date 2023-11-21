@@ -11,9 +11,7 @@ export const signIn = async (req, res) => {
 
 		if (userCredentials.result) {
 			const userToken = generateToken(userCredentials.user);
-			// console.log(userToken);
-			// let test = await verifyToken(userToken, "secretKey");
-			// console.log(test.id);
+
 			res.status(200).json({ message: "succesfully logged in ", accesToken: userToken });
 		} else {
 			res.status(401).json({ message: "unauthorized", reason: userCredentials.message });

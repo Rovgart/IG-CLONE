@@ -9,18 +9,14 @@ export const getAllUsers = async (req, res) => {
 		const users = await User.findAll();
 		res.status(200).json(users);
 	} catch (error) {
-		res.status(500).json({ message: "Server errors", error: error.errors[0].message });
+		res.status(500).json({ message: "Server errors" });
 	}
 };
 
 export const getUser = async (req, res) => {
 	const userName = req.params.username;
 	try {
-		const user = await User.findOne({
-			where: {
-				username: userName,
-			},
-		});
+		const user = await isUserCheck(userName);
 		if (user) {
 			res.status(200).json({ id: user.id, username: user.username });
 		} else {
@@ -39,7 +35,7 @@ export const createUser = async (req, res) => {
 
 		res.status(201).json(newUser);
 	} catch (error) {
-		res.status(500).json({ message: "Server error, norlamnie dalbym tu dojabany error alelo :)", error });
+		res.status(500).json({ message: "Server error todo more errors jakby co ," });
 	}
 };
 
@@ -50,7 +46,7 @@ export const updateUser = async (req, res) => {
 
 	const newPassword = requestBody.newPassword;
 	const newUsername = requestBody.newUsername;
-	let newPassHashed;
+	let newPassHashed = undefined;
 
 	const token = req.headers.authorization;
 	const pureToken = extractingToken(token);

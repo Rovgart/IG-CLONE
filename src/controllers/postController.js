@@ -19,9 +19,9 @@ export const getUserPost = async (req, res) => {
 			},
 		});
 		if (posts.length > 0) {
-			res.json(posts);
+			res.status(200).json(posts);
 		} else {
-			res.json({ message: "no user post found, make sure the user exist and has posted" });
+			res.status(404).json({ message: "no user post found, make sure the user exist and has posted" });
 		}
 	} catch (error) {
 		res.status(500).json({ message: "Server error", error });
