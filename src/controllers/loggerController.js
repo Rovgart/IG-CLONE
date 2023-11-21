@@ -1,5 +1,5 @@
 import { userCredentialsCheck } from "../service/userCredentialsCheck.js";
-import { generateToken } from "../service/jwtToken.js";
+import { generateToken, verifyToken } from "../service/jwtToken.js";
 
 export const signIn = async (req, res) => {
 	const reqBody = req.body;
@@ -8,12 +8,15 @@ export const signIn = async (req, res) => {
 
 	try {
 		const userCredentials = await userCredentialsCheck(username, password);
+
 		if (userCredentials.result) {
 			const userToken = generateToken(userCredentials.user);
-
-			res.status(200).json({ user: userCredentials.user, accesToken: userToken });
+			// console.log(userToken);
+			// let test = await verifyToken(userToken, "secretKey");
+			// console.log(test.id);
+			res.status(200).json({ message: "succesfully logged in ", accesToken: userToken });
 		} else {
-			res.status(401).json({ message: "unauthorized" });
+			res.status(401).json({ message: "unauthorized", reason: userCredentials.message });
 		}
 	} catch (error) {
 		res.status(500).json(error);

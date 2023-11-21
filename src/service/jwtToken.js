@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { json } from "sequelize";
 // Verify a JWT
 const payload = { userId: "123", username: "john_doe" };
 const token = jwt.sign(payload, "secretKey", { expiresIn: "1h" });
@@ -16,7 +17,11 @@ export const generateToken = (user) => {
 		expiresIn: "2h",
 	});
 };
-const test = generateToken({ id: "2", username: "testname" });
 
-console.log(test);
-console.log(verifyToken(test, "secretKey"));
+export const extractingToken = (token) => {
+	if (typeof token === "string") {
+		const [value, bearer, pureToken] = token.split(" ");
+		return pureToken;
+	}
+	return { message: "wrong token format" };
+};
