@@ -1,12 +1,12 @@
 # Instagram Clone (IG-CLONE)
 
-**Authors:** rovgart, c0rly
+**Authors:** rovgart(frontend), c0rly(backend)
 
 **App Link:** [IG-CLONE GitHub Repository](https://github.com/IG-CLONE)
 
 ## Overview
 
-Welcome to our Instagram clone project! This project aims to replicate some features of the popular social media platform Instagram. Feel free to explore, contribute, and learn from the codebase.
+Welcome to our Instagram clone project! This project aims to replicate some features of the popular social media platform Instagram. Feel free to explore and leverage this codebase for learning purposes. Please note that this project is non-commercial and intended solely for educational use.
 
 
 
