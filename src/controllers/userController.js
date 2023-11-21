@@ -1,7 +1,8 @@
 import User from "../models/userModel.js";
 import { encryptPassword, validPassword } from "../service/passCrypt.js";
 import { userCredentialsCheck } from "../service/userCredentialsCheck.js";
-import { verifyToken, extractingToken } from "../service/jwtToken.js";
+import { verifyToken, extractingToken, generateToken } from "../service/jwtToken.js";
+import { isUserCheck } from "../service/isUserCheck.js";
 
 export const getAllUsers = async (req, res) => {
 	try {
@@ -49,22 +50,32 @@ export const updateUser = async (req, res) => {
 
 	const newPassword = requestBody.newPassword;
 	const newUsername = requestBody.newUsername;
-	const newPassHashed = encryptPassword(newPassword);
-	/////todo making sure the user id matches jwt
+	let newPassHashed;
 
+	const token = req.headers.authorization;
+	const pureToken = extractingToken(token);
+
+	if (!token) {
+		return res.status(401).json({ message: "Unauthorized - Token missing" });
+	}
+	if (newPassword) {
+		newPassHashed = encryptPassword(newPassword);
+	}
 	try {
+		const userToken = await verifyToken(pureToken, "secretKey");
 		const userCredentials = await userCredentialsCheck(currentUserName, currentPassword);
+		const user = userCredentials.user;
 
-		if (userCredentials.result) {
-			const user = userCredentials.user;
+		if (userCredentials.result && user.id === userToken.id && user.username === userToken.username) {
+			//
 			const updatedUser = await user.update({ username: newUsername, password: newPassHashed, email: requestBody.email });
-			res.status(200).json(updatedUser);
+			res.status(200).json({ message: `${user.username} succesfully updated`, accessToken: generateToken(updatedUser) });
 			//
 		} else {
-			res.status(404).json(userCredentials);
+			res.status(404).json({ message: userCredentials.result ? "incorect webtoken" : "incorect user credentials" });
 		}
 	} catch (error) {
-		res.status(500).json({ message: "server error " });
+		res.status(500).json({ message: "server error" });
 	}
 };
 
@@ -90,7 +101,7 @@ export const deleteUser = async (req, res) => {
 			//
 		} else {
 			// this checks if the user is in db and gives difrient error based on that
-			res.status(404).json({ message: userCredentials.result ? "incorect webtoken" : "no user was found" });
+			res.status(404).json({ message: userCredentials.result ? "incorect webtoken" : "incorect user credentials" });
 		}
 	} catch (error) {
 		res.status(500).json({ message: "Server error" });
