@@ -2,7 +2,31 @@ import User from "../models/userModel.js";
 import { encryptPassword, validPassword } from "../service/passCrypt.js";
 import { userCredentialsCheck } from "../service/userCredentialsCheck.js";
 import { verifyToken, extractingToken, generateToken } from "../service/jwtToken.js";
-import { isUserCheck } from "../service/isUserCheck.js";
+import { isUserCheck } from "../service/userCredentialsCheck.js";
+
+export const settingUserRoles = async (req, res) => {
+	const token = req.headers.authorization;
+	const pureToken = extractingToken(token);
+
+	const username = req.params.username;
+	const userToChangeRole = req.body.username;
+	const changedRole = req.body.newRole;
+
+	try {
+		if (!token) {
+			return res.status(404).json({ message: "unauthorized no token" });
+		}
+		const userToken = await verifyToken(pureToken, "secretKey");
+		if (userToken.username === username && userToken.role === "ADMIN") {
+			const user = await isUserCheck(userToChangeRole);
+			await user.update({ role: changedRole });
+		} else {
+			res.status(400).json({ message: "unathorized: incorrect credentials, this will be reported" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "server error" });
+	}
+};
 
 export const getAllUsers = async (req, res) => {
 	try {
@@ -118,3 +142,5 @@ export const test = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+

@@ -1,9 +1,10 @@
 import { DataTypes } from "sequelize";
+//import Profile from "./profileModel.js";
 import db from "../config/dbConfig.js";
 import User from "./userModel.js";
 
 const Post = db.define("post", {
-	id: {
+	postId: {
 		type: DataTypes.INTEGER,
 		primaryKey: true,
 		autoIncrement: true,
@@ -21,8 +22,12 @@ const Post = db.define("post", {
 		type: DataTypes.BLOB,
 		allowNull: true,
 	},
+	title: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
 });
-
 Post.belongsTo(User, { foreignKey: "createdBy", targetKey: "username" });
+// Post.belongsTo(Profile, { foreignKey: "profileId" });
 
 export default Post;

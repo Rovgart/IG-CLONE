@@ -1,7 +1,20 @@
 import { validPassword, encryptPassword } from "./passCrypt.js";
-import { isUserCheck } from "./isUserCheck.js";
+import User from "../models/userModel.js";
 
 /// this function checks if the user is in db and his credentials, if everyting is ok it will return him
+
+export const isUserCheck = async (userName) => {
+	try {
+		const user = await User.findOne({
+			where: {
+				username: userName,
+			},
+		});
+		return user ? user : null;
+	} catch (error) {
+		return { message: "server error try again" };
+	}
+};
 
 export const userCredentialsCheck = async (userName, password) => {
 	try {

@@ -1,7 +1,7 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
-import db from '../config/dbConfig.js';
+import { DataTypes, Model, Sequelize } from "sequelize";
+import db from "../config/dbConfig.js";
 
-const User = db.define('user', {
+const User = db.define("user", {
 	id: {
 		type: DataTypes.INTEGER,
 		primaryKey: true,
@@ -21,6 +21,11 @@ const User = db.define('user', {
 	password: {
 		type: DataTypes.STRING,
 		allowNull: false,
+	},
+	role: {
+		type: DataTypes.STRING,
+		allowNull: false,
+		defaultValue: "USER",
 	},
 });
 

@@ -12,7 +12,7 @@ export const verifyToken = async (token, key) => {
 };
 
 export const generateToken = (user) => {
-	return jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET_KEY || "secretKey");
+	return jwt.sign({ id: user.id, username: user.username, role: user.role }, process.env.JWT_SECRET_KEY || "secretKey");
 };
 
 export const extractingToken = (token) => {
