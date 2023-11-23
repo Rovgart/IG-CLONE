@@ -1,8 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
 import db from "./config/dbConfig.js";
+
 ///wtf mappings suckj duck
 //import Profile from "./models/profileModel.js";
+
 import User from "./models/userModel.js";
 import Post from "./models/postModel.js";
 import Like from "./models/likeModel.js";
@@ -18,7 +20,6 @@ const app = express();
 app.use(cors());
 
 app.use(bodyParser.json());
-
 app.use("/api", logRouters);
 app.use("/api", userRoutes);
 app.use("/api", postRouters);

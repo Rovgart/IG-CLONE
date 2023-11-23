@@ -70,7 +70,7 @@ export const updateUser = async (req, res) => {
 
 	const newPassword = requestBody.newPassword;
 	const newUsername = requestBody.newUsername;
-	let newPassHashed = undefined;
+let newPassHashed = undefined;
 
 	const token = req.headers.authorization;
 	const pureToken = extractingToken(token);

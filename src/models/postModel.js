@@ -27,6 +27,7 @@ const Post = db.define("post", {
 		allowNull: false,
 	},
 });
+
 Post.belongsTo(User, { foreignKey: "createdBy", targetKey: "username" });
 // Post.belongsTo(Profile, { foreignKey: "profileId" });
 

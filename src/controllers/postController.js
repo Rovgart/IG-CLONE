@@ -1,13 +1,19 @@
 import Post from "../models/postModel.js";
+import { Op } from "sequelize";
 
 export const createPost = async (req, res) => {
 	const request = req.body;
 
 	try {
-		const newPost = await Post.create({ createdBy: request.createdBy, content: request.content, contentPic: request.contentPic });
-		res.status(201).json(newPost);
+		const newPost = await Post.create({
+			createdBy: request.createdBy,
+			content: request.content,
+			contentPic: request.contentPic,
+			title: request.title,
+		});
+		res.status(201).json({ message: "created succesfully", post: newPost });
 	} catch (error) {
-		res.status(500).json({ message: "Server error" });
+		res.status(500).json({ message: "Server error", error });
 	}
 };
 export const getUserPost = async (req, res) => {
@@ -25,5 +31,35 @@ export const getUserPost = async (req, res) => {
 		}
 	} catch (error) {
 		res.status(500).json({ message: "Server error", error });
+	}
+};
+
+export const searchPost = async (req, res) => {
+	const searchQuerry = req.body.search;
+	try {
+		const resultTitle = await Post.findAll({
+			where: {
+				title: {
+					[Op.like]: `%${searchQuerry}%`,
+				},
+			},
+		});
+		const resultContent = await Post.findAll({
+			where: {
+				content: {
+					[Op.like]: `%${searchQuerry}%`,
+				},
+			},
+		});
+
+		const response =
+			[...resultTitle, ...resultContent].length > 0 ? [...resultTitle, ...resultContent] : resultTitle.length > 0 ? resultTitle : resultContent;
+		if (response.length > 0) {
+			res.status(200).json({ posts: response });
+		} else {
+			res.status(404).json({ message: "no posts were found try again" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "server error" });
 	}
 };
