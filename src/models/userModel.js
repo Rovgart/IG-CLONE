@@ -27,6 +27,22 @@ const User = db.define("user", {
 		allowNull: false,
 		defaultValue: "USER",
 	},
+	following: {
+		type: DataTypes.STRING,
+	},
+	followers: {
+		type: DataTypes.STRING,
+	},
+	indexes: [
+		{
+			unique: true,
+			fields: ["userId", "postId"],
+			name: "user_post_unique",
+		},
+	],
 });
+
+
+
 
 export default User;

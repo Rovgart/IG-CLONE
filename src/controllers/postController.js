@@ -52,9 +52,23 @@ export const searchPost = async (req, res) => {
 			},
 		});
 
-		const response =
-			[...resultTitle, ...resultContent].length > 0 ? [...resultTitle, ...resultContent] : resultTitle.length > 0 ? resultTitle : resultContent;
-		if (response.length > 0) {
+		//// todo logic this looks trash
+		// const result =
+		// 	resultContent.length > 0 && resultTitle.length > 0 ? [...resultTitle, ...resultContent] : resultTitle.length > 0 ? resultTitle : resultContent;
+
+		if (resultTitle.length > 0 && resultContent.length > 0) {
+			//
+			const response = [...resultTitle, ...resultContent];
+			res.status(200).json({ posts: response });
+			//
+		} else if (resultTitle.length > 0) {
+			//
+			const response = resultTitle;
+			res.status(200).json({ posts: response });
+			//
+		} else if (resultContent.length > 0) {
+			//
+			const response = resultContent;
 			res.status(200).json({ posts: response });
 		} else {
 			res.status(404).json({ message: "no posts were found try again" });
@@ -62,4 +76,8 @@ export const searchPost = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ message: "server error" });
 	}
+};
+
+export const followingPosts = async (req, res) => {
+	req.body;
 };
