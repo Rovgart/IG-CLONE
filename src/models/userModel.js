@@ -1,5 +1,6 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import db from "../config/dbConfig.js";
+import Follow from "./followsModel.js";
 
 const User = db.define("user", {
 	id: {
@@ -33,16 +34,6 @@ const User = db.define("user", {
 	followers: {
 		type: DataTypes.STRING,
 	},
-	indexes: [
-		{
-			unique: true,
-			fields: ["userId", "postId"],
-			name: "user_post_unique",
-		},
-	],
 });
-
-
-
 
 export default User;

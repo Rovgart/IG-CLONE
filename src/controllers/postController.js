@@ -78,6 +78,3 @@ export const searchPost = async (req, res) => {
 	}
 };
 
-export const followingPosts = async (req, res) => {
-	req.body;
-};

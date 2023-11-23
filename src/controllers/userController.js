@@ -143,20 +143,20 @@ export const test = async (req, res) => {
 	}
 };
 
-export const followUser = async (req, res) => {
-	const newFollowed = req.body.followed;
-	const userToken = req.headers.authorization;
-	const token = extractingToken(userToken);
+// export const followUser = async (req, res) => {
+// 	const newFollowed = req.body.followed;
+// 	const userToken = req.headers.authorization;
+// 	const token = extractingToken(userToken);
 
-	try {
-		const pureToken = await verifyToken(token, "secretKey");
-		const username = pureToken.username;
+// 	try {
+// 		const pureToken = await verifyToken(token, "secretKey");
+// 		const username = pureToken.username;
 
-		const user = await isUserCheck(username);
-		const result = await user.update({ following: newFollowed });
+// 		const user = await isUserCheck(username);
+// 		const result = await user.update({ following: newFollowed });
 
-		res.status(201).json(result);
-	} catch (error) {
-		res.status(500).json({ message: "server Error" });
-	}
-};
+// 		res.status(201).json(result);
+// 	} catch (error) {
+// 		res.status(500).json({ message: "server Error" });
+// 	}
+// };
