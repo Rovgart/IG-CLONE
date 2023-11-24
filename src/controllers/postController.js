@@ -30,7 +30,7 @@ export const getUserPost = async (req, res) => {
 			res.status(404).json({ message: "no user post found, make sure the user exist and has posted" });
 		}
 	} catch (error) {
-		res.status(500).json({ message: "Server error", error });
+		res.status(500).json({ message: "server error", error });
 	}
 };
 
@@ -77,4 +77,3 @@ export const searchPost = async (req, res) => {
 		res.status(500).json({ message: "server error" });
 	}
 };
-

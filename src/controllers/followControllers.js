@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import Follow from "../models/followsModel.js";
 import { isUserCheck } from "../service/userCredentialsCheck.js";
+import { extractingToken, verifyToken } from "../service/jwtToken.js";
 
 export const followUser = async (req, res) => {
 	const whoWillFollow = req.body.followerUsername;
@@ -14,6 +15,7 @@ export const followUser = async (req, res) => {
 	}
 };
 
+/// this is who is foollowing the user
 export const getUserFollowers = async (req, res) => {
 	const username = req.body.username;
 
@@ -32,6 +34,7 @@ export const getUserFollowers = async (req, res) => {
 	}
 };
 
+/// this is who user follows
 export const getUserFollowing = async (req, res) => {
 	const username = req.body.username;
 
@@ -50,9 +53,6 @@ export const getUserFollowing = async (req, res) => {
 	}
 };
 
-export const userFollowedPosts = async (req, res) => {
-	req.body;
-};
-
 /// idea kiedy bedzie profil to bedziesz mogl dac go do getuserfollowin i followers zmapowac same nazyu uzytkownikow i wpierdolic w finallProfile where usernames =
 // usernama z followerow i ez masz zrobiony buffer moze nie wiem
+//// profile having posts id's in arrays in profile model

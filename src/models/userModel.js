@@ -29,10 +29,10 @@ const User = db.define("user", {
 		defaultValue: "USER",
 	},
 	following: {
-		type: DataTypes.STRING,
+		type: DataTypes.INTEGER,
 	},
 	followers: {
-		type: DataTypes.STRING,
+		type: DataTypes.INTEGER,
 	},
 });
 

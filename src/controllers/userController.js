@@ -1,8 +1,10 @@
+import Profile from "../models/profileModel.js";
 import User from "../models/userModel.js";
 import { encryptPassword, validPassword } from "../service/passCrypt.js";
 import { userCredentialsCheck } from "../service/userCredentialsCheck.js";
 import { verifyToken, extractingToken, generateToken } from "../service/jwtToken.js";
 import { isUserCheck } from "../service/userCredentialsCheck.js";
+import { Op } from "sequelize";
 
 export const settingUserRoles = async (req, res) => {
 	const token = req.headers.authorization;
@@ -41,6 +43,7 @@ export const getUser = async (req, res) => {
 	const userName = req.params.username;
 	try {
 		const user = await isUserCheck(userName);
+
 		if (user) {
 			res.status(200).json({ id: user.id, username: user.username });
 		} else {
@@ -56,10 +59,11 @@ export const createUser = async (req, res) => {
 	const hashingPass = encryptPassword(request.password);
 	try {
 		const newUser = await User.create({ username: request.username, email: request.email, password: hashingPass });
+		const newProfile = await Profile.create({ belongsTo: request.username });
 
-		res.status(201).json(newUser);
+		res.status(201).json({ user: newUser, profile: newProfile });
 	} catch (error) {
-		res.status(500).json({ message: "Server error todo more errors jakby co ," });
+		res.status(500).json({ message: "Server error todo more errors jakby co ,", error });
 	}
 };
 
@@ -128,35 +132,27 @@ export const deleteUser = async (req, res) => {
 	}
 };
 
-export const test = async (req, res) => {
-	const userName = req.body.username;
-	const password = req.body.password;
-
+export const getUsers = async (req, res) => {
+	const userName = req.params.username;
 	try {
-		const testJson = await userCredentialsCheck(userName, password);
-		if (testJson.result) {
-			console.log("ahaahaha dziala kurwa ");
+		const users = await User.findAll({
+			where: {
+				username: {
+					[Op.like]: `%${userName}%`,
+				},
+			},
+		});
+
+		if (users.length > 0) {
+			const userData = users.map((userObject) => ({
+				id: userObject.id,
+				username: userObject.username,
+			}));
+			res.status(200).json({ users: userData });
+		} else {
+			res.status(404).json({ messege: "Cant find users" });
 		}
-		res.json(testJson);
 	} catch (error) {
-		res.status(500).json({ message: "Server error" });
+		res.status(500).json({ messege: "Internal server errorsssss" });
 	}
 };
-
-// export const followUser = async (req, res) => {
-// 	const newFollowed = req.body.followed;
-// 	const userToken = req.headers.authorization;
-// 	const token = extractingToken(userToken);
-
-// 	try {
-// 		const pureToken = await verifyToken(token, "secretKey");
-// 		const username = pureToken.username;
-
-// 		const user = await isUserCheck(username);
-// 		const result = await user.update({ following: newFollowed });
-
-// 		res.status(201).json(result);
-// 	} catch (error) {
-// 		res.status(500).json({ message: "server Error" });
-// 	}
-// };

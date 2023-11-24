@@ -12,12 +12,13 @@ import db from "./config/dbConfig.js";
 // usernama z followerow i ez masz zrobiony buffer moze nie wiem
 
 import Like from "./models/likeModel.js";
-import { Follow, User, Post } from "./models/mapping.js";
+import { Follow, User, Post, Profile } from "./models/mapping.js";
 
 import userRoutes from "./routes/userRouters.js";
 import postRouters from "./routes/postRouters.js";
 import logRouters from "./routes/logRouters.js";
 import followRouters from "./routes/followRouters.js";
+import profileRouters from "./routes/profileRouters.js";
 
 import cors from "cors";
 
@@ -32,6 +33,7 @@ app.use("/api", logRouters);
 app.use("/api", userRoutes);
 app.use("/api", postRouters);
 app.use("/api", followRouters);
+app.use("/api", profileRouters);
 
 const PORT = process.env.PORT || 3000;
 
@@ -45,7 +47,7 @@ db.authenticate()
 
 db.sync({ force: false })
 	.then(async () => {
-		await Promise.all([Follow.sync(), Post.sync(), User.sync(), Like.sync()]);
+		await Promise.all([Follow.sync(), Post.sync(), User.sync(), Like.sync(), Profile.sync()]);
 		app.listen(PORT, () => {
 			console.log(`Server is running on port ${PORT}`);
 		});
