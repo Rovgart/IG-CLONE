@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
+import classes from "./LoginForm.module.css";
+import { Redirect, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 function LoginForm(props) {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
 
   const [inputs, setInputs] = useState({
@@ -15,79 +19,110 @@ function LoginForm(props) {
     };
     setInputs(nextState);
   };
-
+  const data = {
+    user: props.username,
+    password: props.password,
+  };
   const formSubmitHandler = (e) => {
+    const fetchValidation = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: inputs.login,
+            password: inputs.password,
+          }),
+        });
+        const userValid = await response.json();
+        console.log(userValid);
+        if (userValid.message === "unauthorized") {
+          alert("Błąd logowania");
+        } else {
+          navigate("/MainPage");
+          sessionStorage.setItem("email", JSON.stringify(data.user));
+          sessionStorage.setItem("password", JSON.stringify(data.password));
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchValidation();
     e.preventDefault();
-    if (formValidity) {
-      alert("Kocham WSiZ");
-    }
   };
 
-  // useEffect(async () => {
-  //   const fetchedData = await fetch("");
-  //   const resp = (await fetchedData).json();
-  //   const data = setUserData(resp);
-  // });
   useEffect(() => {
     const identifier = setTimeout(() => {
       console.log("Validating...");
-      setFormValidity(
-        inputs.login.includes("@") && inputs.password.length >= 5
-      );
-    }, 500);
+    }, 100);
     return () => {
       clearTimeout(identifier);
       console.log("CLEANUP");
     };
-  }, [inputs.login, inputs.login]);
+  }, [inputs.login, inputs.password, props.username, props.password]);
 
   return (
     <div
       className={` ${
         props.mdScreen ? "col-start-3 col-end-4" : "col-start-2 col-end-4"
-      } items-center h-full lg:h-3/4 w-screen lg:w-3/4 shadow-black shadow-sm justify-start sm:justify-around gap-3 flex flex-col p-3 `}
+      } items-center h-full lg:h-3/4 w-screen lg:w-3/4 shadow-black shadow-sm lg:justify-start  gap-3 flex flex-col p-3 `}
     >
       <form
         onSubmit={formSubmitHandler}
-        className=" lg:shadow-black lg:shadow-sm lg:p-7 flex flex-col gap-4 mt-2"
+        className="  lg:shadow-sm lg:w-full lg:h-full lg:p-7 flex flex-col gap-4 mt-2"
         action=""
       >
         <h1 className="font-logoFont text-center text-3xl">InstaClone</h1>
-
-        <input
-          onChange={inputHandler}
-          className={`px-2 py-1 shadow-sm shadow-black`}
-          type="text"
-          name="login"
-          id=""
-          placeholder="login"
-          value={inputs.login}
-        />
-        <input
-          onChange={inputHandler}
-          className="px-2 py-1 shadow-sm shadow-black"
-          type="password"
-          name="password"
-          value={inputs.password}
-          id=""
-          placeholder="password"
-        />
-        <div className="flex gap-3">
-          {formValidity && (
-            <input
-              className="bg-blue-900 text-white px-2 py-2 rounded-md w-full font-semibold"
-              type="submit"
-              value="Sign In"
-            />
-          )}
+        <div className={classes.field}>
+          <input
+            onChange={inputHandler}
+            className={classes.login}
+            type="text"
+            name="login"
+            id=""
+            value={inputs.login}
+            placeholder="login/email"
+          />
+          <label htmlFor="username" className={classes.label}>
+            Login
+          </label>
+        </div>
+        <div className={classes.field}>
+          <input
+            onChange={inputHandler}
+            className={classes.password}
+            type="password"
+            name="password"
+            value={inputs.password}
+            id=""
+            placeholder="password"
+          />
+          <label className={classes.label} htmlFor="">
+            Password
+          </label>
+        </div>
+        <div className="flex gap-3 self-center justify-center  w-1/2">
+          <button
+            className="bg-blue-900 text-white px-2 py-1 rounded-md w-full font-semibold"
+            type="submit"
+            value="Sign In"
+          >
+            Sign In
+          </button>
+        </div>
+        <div className="flex justify-center items-center self-center w-full ">
+          <div className={classes.line} />
+          <p className="">OR</p>
+          <div className={classes.line} />
+        </div>
+        <div className="flex justify-center self-center w-1/2 text-white font-semibold">
+          <button className=" bg-red-400 px-2 py-1 rounded-md w-full">
+            <Link to={"/Register"}>Sign Up</Link>
+          </button>
         </div>
       </form>
-      <div className="lg:shadow-black lg:shadow-sm p-3">
-        <span className=" text-center text-account" href="#">
-          Don't have an account yet ?{" "}
-          <a className="text-blue-400 font-medium">Sign up</a>
-        </span>
-      </div>
     </div>
   );
 }

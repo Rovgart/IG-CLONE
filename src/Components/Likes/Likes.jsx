@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import PostContext from "../../store/post-context";
 import Modal from "../Modal/Modal";
-function Likes() {
+const Likes = forwardRef(function (props, ref) {
   const postCtx = useContext(PostContext);
 
   return (
     <Modal>
-      <div className="flex items-center gap-2">
+      <div ref={ref} className="flex items-center gap-2">
         <img className="w-1/6 rounded-full" src={postCtx[0].authorImg} alt="" />
         <div className="">
           <p className="text-postUser">
@@ -16,5 +16,5 @@ function Likes() {
       </div>
     </Modal>
   );
-}
+});
 export default Likes;

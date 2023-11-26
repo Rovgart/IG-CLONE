@@ -1,12 +1,16 @@
-import Header from "../Components/Header";
+import Header from "../Components/Header/Header";
 import Post from "../Components/Post/Post";
 import FooterMenu from "../Components/FooterMenu/FooterMenu";
+import { useState } from "react";
 function MainPage() {
+  const [isDark, setIsDark] = useState(false);
   return (
-    <div className="">
+    <div className={`${isDark ? "dark-mode" : ""}`}>
       <Header />
-      <Post />
-      <FooterMenu />
+      <div className="sm:flex gap-3 ">
+        <Post />
+        <FooterMenu />
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: "Helvetica, Arial, sans-serif",
-        logoFont: "Agbalumo",
+        logoFont: "Lora",
       },
       fontSize: {
         postCont: `clamp(.8rem,1.2vw,2.3rem)`,
@@ -18,5 +18,6 @@ module.exports = {
       },
     },
   },
+  darkMode: "class",
   plugins: [],
 };

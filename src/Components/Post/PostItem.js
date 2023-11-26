@@ -10,7 +10,7 @@ function PostItem({
 }) {
   const postStyling = postType;
   return (
-    <div className="h-1/2 flex flex-col gap-3">
+    <div className="h-1/2 flex flex-col gap-5 border-b ">
       <div>
         <div className="h-1/4 flex justify-start items-center gap-2  ">
           <img className="w-1/12 h-1/4 rounded-full" src={authorImg} alt="" />

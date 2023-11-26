@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import kubaPng from "../assets/kubus.jpg";
 import rafalPng from "../assets/rafal.jpg";
+import ja_wyciety from "../assets/Ja_wyciety.png";
 const PostContext = createContext([
   {
     id: "1",
@@ -21,6 +22,16 @@ const PostContext = createContext([
     postTitle: "Frekwencja to moje drugie imię",
     postContent: "Jestem bardzo punktualnym studentem, polecam również Tobie.",
     likes: 578,
+    comments: ["Kocham Wsiz"],
+    postType: "default",
+  },
+  {
+    id: "3",
+    author: "rovgart",
+    authorImg: ja_wyciety,
+    postTitle: "Kocham naszą uczelnie",
+    postContent: "Kocham Wsiz",
+    likes: 1,
     comments: ["Kocham Wsiz"],
     postType: "default",
   },

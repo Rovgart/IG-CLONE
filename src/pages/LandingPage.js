@@ -3,53 +3,37 @@ import LoginForm from "./LoginForm";
 import { CiMobile3 } from "react-icons/ci";
 import { useMediaQuery } from "react-responsive";
 import jaWyciety from "../assets/Ja_wyciety.png";
-import milosz from "../assets/milosz.jpg";
+import milosz from "../assets/milosz.png";
 import classes from "./LandingPage.module.css";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import CarouselSlide from "./CarouselSlide";
+import TypeAnimation from "./TypeAnimation";
+import useLoading from "../customHooks/useLoading";
+import { useLoaderData } from "react-router-dom";
+
+// Fetching Users
+export const fetchUsers = async () => {
+  const resp = await fetch("http://localhost:3000/api/users");
+  const users = await resp.json();
+  return users;
+};
+
 function LandingPage() {
   const [curSlide, setCurSlide] = useState(0);
-  const [users, setUsers] = useState([]);
-
   const mdScreen = useMediaQuery({
     query: `(min-width:1024px)`,
   });
-  const images = [jaWyciety, milosz];
-  useEffect(() => {
-    const nextSlide = setInterval(() => {
-      setCurSlide((prevSt) => (prevSt + 1) % images.length);
-    }, 3000);
-    return () => {
-      clearInterval(nextSlide);
-    };
-  });
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const response = await fetch("http://localhost:3000/api/user/1");
-        const data = await response;
-        setUsers(data);
-        console.log(users);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    fetchUser();
-  }, []);
+  const users = useLoaderData();
+  console.log(users);
   return (
     <div className=" grid grid-cols-landing gap-1/2 border relative border-slate-500 items-center h-screen justify-items-center">
-      {mdScreen && (
-        <CiMobile3
-          style={{
-            gridColumn: "2/3",
-            maxWidth: "130%",
-          }}
-          size={`${mdScreen ? "35rem" : "8rem"}`}
-        />
-      )}
-      {mdScreen && <CarouselSlide currentSlide={curSlide} images={images} />}
-      <LoginForm mdScreen={mdScreen} />
+      <TypeAnimation mdScreen={mdScreen} />
+      <LoginForm
+        mdScreen={mdScreen}
+        username={users.email}
+        password={users.password}
+      />
       <footer className="flex items-center gap-3 absolute bottom-0 text-gray-400 tracking-normal italic p-3 text-sm">
         <h2>c0rly-Back-End</h2>
         <h2>rovgart-Front-End</h2>
