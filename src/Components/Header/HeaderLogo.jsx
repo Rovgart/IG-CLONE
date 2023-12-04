@@ -6,7 +6,7 @@ function HeaderLogo({ mdScreen }) {
       <picture>
         <AiFillInstagram
           color={"black"}
-          size={`${mdScreen ? "4rem" : "2rem"}`}
+          size={`${mdScreen ? "4rem" : "3rem"}`}
         />
       </picture>
       <h1

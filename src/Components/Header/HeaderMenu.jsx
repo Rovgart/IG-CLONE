@@ -12,12 +12,17 @@ function HeaderMenu({ mdScreen }) {
   const postCtx = useContext(PostContext);
   const ref = useRef(null);
   const [opened, setOpened] = useState(false);
+  const openHandler = () => {
+    setOpened(true);
+  };
   const body = document.querySelector("body");
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      setOpened(true);
-    };
-  }, [opened]);
+  const handleOutsideClick = (e) => {
+    console.log(e.currentTarget);
+    console.log(ref.current);
+    if (e.currentTarget !== ref) {
+      setOpened(false);
+    }
+  };
 
   const menuCtx = useContext(MenuContext);
   const [dark, setDark] = useState(false);
@@ -26,8 +31,10 @@ function HeaderMenu({ mdScreen }) {
   };
   return (
     <nav className="flex items-center gap-2 ">
-      <CiHeart size={"2.5rem"} onClick={() => setOpened(true)} />
-      {opened && <Likes ref={ref} />}
+      <div>
+        <CiHeart size={"2.5rem"} onClick={openHandler} />
+      </div>
+      {opened && <Likes ref={ref} onCloseHandler={handleOutsideClick} />}
     </nav>
   );
 }

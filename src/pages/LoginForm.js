@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import classes from "./LoginForm.module.css";
 import { Redirect, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Cookies } from "react-cookie";
+
 function LoginForm(props) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
@@ -19,36 +21,37 @@ function LoginForm(props) {
     };
     setInputs(nextState);
   };
-  const data = {
-    user: props.username,
-    password: props.password,
+  const cookies = new Cookies();
+
+  const fetchValidation = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: inputs.login,
+          password: inputs.password,
+        }),
+      });
+      const userValid = await response.json();
+      console.log(userValid);
+      console.log(response);
+      if (!response.ok) {
+        alert("Błąd logowania");
+      } else {
+        navigate("/MainPage");
+        sessionStorage.setItem("email", inputs.login);
+        sessionStorage.setItem("password", inputs.password);
+        const cookie = new Cookies();
+        cookie.set("token", userValid.accesToken);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   const formSubmitHandler = (e) => {
-    const fetchValidation = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: inputs.login,
-            password: inputs.password,
-          }),
-        });
-        const userValid = await response.json();
-        console.log(userValid);
-        if (userValid.message === "unauthorized") {
-          alert("Błąd logowania");
-        } else {
-          navigate("/MainPage");
-          sessionStorage.setItem("email", JSON.stringify(data.user));
-          sessionStorage.setItem("password", JSON.stringify(data.password));
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
     fetchValidation();
     e.preventDefault();
   };
@@ -67,11 +70,11 @@ function LoginForm(props) {
     <div
       className={` ${
         props.mdScreen ? "col-start-3 col-end-4" : "col-start-2 col-end-4"
-      } items-center h-full lg:h-3/4 w-screen lg:w-3/4 shadow-black shadow-sm lg:justify-start  gap-3 flex flex-col p-3 `}
+      } items-center h-full lg:h-auto w-screen lg:w-3/4 shadow-black shadow-sm lg:justify-start  gap-3 flex flex-col p-3 `}
     >
       <form
         onSubmit={formSubmitHandler}
-        className="  lg:shadow-sm lg:w-full lg:h-full lg:p-7 flex flex-col gap-4 mt-2"
+        className="  lg:shadow-sm lg:w-full lg:h-auto lg:p-7 flex flex-col gap-4 mt-2"
         action=""
       >
         <h1 className="font-logoFont text-center text-3xl">InstaClone</h1>
@@ -105,7 +108,7 @@ function LoginForm(props) {
         </div>
         <div className="flex gap-3 self-center justify-center  w-1/2">
           <button
-            className="bg-blue-900 text-white px-2 py-1 rounded-md w-full font-semibold"
+            className={`${classes["signIn"]} py-1 px-1 rounded-lg`}
             type="submit"
             value="Sign In"
           >
@@ -117,7 +120,7 @@ function LoginForm(props) {
           <p className="">OR</p>
           <div className={classes.line} />
         </div>
-        <div className="flex justify-center self-center w-1/2 text-white font-semibold">
+        <div className="flex justify-center self-center w-1/2 text-white font-normal">
           <button className=" bg-red-400 px-2 py-1 rounded-md w-full">
             <Link to={"/Register"}>Sign Up</Link>
           </button>

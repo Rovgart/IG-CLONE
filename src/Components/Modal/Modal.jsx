@@ -13,7 +13,7 @@ const Overlay = forwardRef((props, ref) => {
 });
 function Modal(props) {
   return (
-    <div>
+    <div onClick={props.onClose}>
       {ReactDOM.createPortal(<Overlay>{props.children}</Overlay>, overlays)}
     </div>
   );

@@ -1,16 +1,13 @@
 import ReactDOM from "react-dom";
+import classes from "./AddPostOverlay.module.css";
 const overlays = document.querySelector("#overlays");
 function Backdrop(props) {
-  return (
-    <div className="absolute backdrop-blur-xl w-screen h-screen">
-      {props.children}
-    </div>
-  );
+  return <div className={classes.backdrop}>{props.children}</div>;
 }
 
 function AddPostOverlay(props) {
-  <div className="w-3/4 absolute h-1/4">
-    <div>{props.children}</div>
+  <div className={classes.modal}>
+    <div className={classes.content}>{props.children}</div>
   </div>;
 }
 

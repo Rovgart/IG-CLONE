@@ -10,7 +10,8 @@ import { motion } from "framer-motion";
 import CarouselSlide from "./CarouselSlide";
 import TypeAnimation from "./TypeAnimation";
 import useLoading from "../customHooks/useLoading";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigation } from "react-router-dom";
+import Loader from "./Loader";
 
 // Fetching Users
 export const fetchUsers = async () => {
@@ -25,6 +26,10 @@ function LandingPage() {
     query: `(min-width:1024px)`,
   });
   const users = useLoaderData();
+  const navigation = useNavigation();
+  if (navigation.state === "loading") {
+    return <Loader />;
+  }
   console.log(users);
   return (
     <div className=" grid grid-cols-landing gap-1/2 border relative border-slate-500 items-center h-screen justify-items-center">

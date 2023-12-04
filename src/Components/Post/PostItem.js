@@ -10,10 +10,14 @@ function PostItem({
 }) {
   const postStyling = postType;
   return (
-    <div className="h-1/2 flex flex-col gap-5 border-b ">
+    <div className="h-1/2 w-screen lg:w-1/2 lg:mx-auto lg:flex lg:flex-col lg:justfy-center lg:m-0 flex flex-col gap-5 border-b ">
       <div>
         <div className="h-1/4 flex justify-start items-center gap-2  ">
-          <img className="w-1/12 h-1/4 rounded-full" src={authorImg} alt="" />
+          <img
+            className="w-1/12 lg:w-10 h-1/4 rounded-full"
+            src={authorImg}
+            alt=""
+          />
           <h1 className="font-bold text-postUser ">{authorName}</h1>
         </div>
       </div>

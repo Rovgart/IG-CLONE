@@ -67,9 +67,8 @@ input[type="password"] {
   border-radius: 3px;
   border: 1px solid #efefef;
 }
-input[type="submit"] {
-  padding: 8px 10px 8px 10px;
-  border-radius: 10px;
+.signIn {
+  width: 100%;
   background-color: rgb(77, 181, 249);
   color: white;
 }

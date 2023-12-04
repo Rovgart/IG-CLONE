@@ -6,6 +6,7 @@ const PostContext = createContext([
   {
     id: "1",
     author: "dundunek1",
+    email: "dundunek1@yahoo.com",
     authorImg: kubaPng,
     postTitle: "Dlaczego uwielbiam ćwiczyć o 8.00 rano",
     postContent:
@@ -18,6 +19,7 @@ const PostContext = createContext([
   {
     id: "2",
     author: "rafalstawarz69",
+    email: "rafalstawarz69@interia.pl",
     authorImg: rafalPng,
     postTitle: "Frekwencja to moje drugie imię",
     postContent: "Jestem bardzo punktualnym studentem, polecam również Tobie.",
@@ -29,6 +31,7 @@ const PostContext = createContext([
     id: "3",
     author: "rovgart",
     authorImg: ja_wyciety,
+    email: "rovgarth@onet.pl",
     postTitle: "Kocham naszą uczelnie",
     postContent: "Kocham Wsiz",
     likes: 1,
